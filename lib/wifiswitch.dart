@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:test1/bluethooth.dart';
+import 'package:test1/striplight.dart';
 import 'util.dart';
 
 void main() async {
@@ -113,16 +115,28 @@ class _WifiSwitchState extends State<WifiSwitch> {
         for (int i = 0; i < (lights.length/2); i++){
           col = [];
           for(int j = 0; j<2;j++) {
-            Color textColor = lights[(i*2+j+1) -1]['light${i*2+j+1}'] == "ON" ? Color(0xFFc7b698) : Color(0xFFa5a6aa);
-            String imageUrl = lights[(i*2+j+1) -1]['light${i*2+j+1}'] == "ON" ? 'assets/onlight.png' : 'assets/offlight.png';
+            Color textColor = lights[(i*2+j+1) -1]['light${i*2+j+1}'] == "ON" ? Color.fromRGBO(255, 255, 255, 1) : Color.fromRGBO(0, 0, 0, 1);
+            dynamic btnColor =  lights[(i*2+j+1) -1]['light${i*2+j+1}'] == "ON" ? [
+              Color(0xFF1576d5), // First color
+              Color(0xFF1989f7), // Second color
+            ]:  [
+              Color(0xffffffff), //  First color
+              Color(0xffffffff), //
+            ];
+            String imageUrl = lights[(i*2+j+1) -1]['light${i*2+j+1}'] == "ON" ? 'assets/nlighton.png' : 'assets/nlightoff.png';
             col.add(
                 Expanded(child: Padding(
-                padding: EdgeInsets.all(7.0),
+                padding: EdgeInsets.all(1.0),
                 child: ElevatedButton(
+
                     style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                        surfaceTintColor:Colors.transparent,
                       padding: EdgeInsets.all(8),
+
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                        // borderRadius: BorderRadius.circular(20.0), // Set border radius here
                       ),
                     ),
 
@@ -130,35 +144,84 @@ class _WifiSwitchState extends State<WifiSwitch> {
                     onPressed: () => {
                            onPress(i*2+j+1)
 
-                    }, child:
-                new Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    }, child: Ink(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1), // color of shadow
+                        spreadRadius: 1, // spread radius
+                        blurRadius: 0, // blur radius
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: btnColor,
+                    ),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Container(
 
-                      new Column(children: [Image.asset(imageUrl, width: 100,),],)
-                    ],),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+
+                    child:
+
+                    new Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+                          new Column(children: [
+                            Padding(padding: EdgeInsets.fromLTRB(11, 12, 0, 0) , child:   new Text("Switch",style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                                color: textColor) ))
+
+
+
+
+                          ],
+                          )
+                        ],),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+                          new Column(children: [
+                            Padding(padding: EdgeInsets.fromLTRB(15, 20, 20, 10) , child:     Image.asset(imageUrl, width: 50,))
+
+
+
+
+                          ],
+                          )
+                        ],),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
                           new Column(children: [
 
                             Padding(
                               padding: EdgeInsets.all(8),
                               child:  new Column(children: [
+                                Padding(padding: EdgeInsets.fromLTRB(5,0,10,5),child:
+
                                 new Row(children: [
 
                                   new Text('Light ${i*2+j+1}',
                                       style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          color:Color(0xFFa5a6aa))),
+                                          color:textColor)),
                                   SizedBox(width: 12),
                                   new Text('${lights[(i*2+j+1) -1]['light${i*2+j+1}']}',
                                       style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 18,
                                           color: textColor)),
                                 ],)
+                                ),
 
 
 
@@ -168,10 +231,14 @@ class _WifiSwitchState extends State<WifiSwitch> {
 
                           ],)
 
+                        ],)
+
+
                     ],)
 
 
-                ],)),
+                  ),
+                )),
               ))
 
             );
@@ -211,7 +278,7 @@ class _WifiSwitchState extends State<WifiSwitch> {
         colorScheme: ColorScheme.fromSeed(
           seedColor: customColor,
           // ···
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
         ),
 
         textTheme: TextTheme(
@@ -224,24 +291,148 @@ class _WifiSwitchState extends State<WifiSwitch> {
         ),
       ),
       home: Scaffold(
+          drawer: SizedBox(width: MediaQuery.of(context).size.width * 0.3,
+          child:
+          Drawer(
 
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF1576d5), // First color
+                    Color(0xFF1989f7), // Gradient color
+                  ],
+                ),
+              ),
+              child: new Column(
+                children: [
+                  Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0),child:
+                  Image.asset('assets/logo.png',width: 50,),
+                  ),
+                  SizedBox(height: 50),
+
+                  ElevatedButton(
+                    onPressed: () {
+
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WifiSwitch()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                       backgroundColor: Colors.transparent,
+                       surfaceTintColor:Colors.transparent,
+                      padding: EdgeInsets.all(8),
+
+                      shape: RoundedRectangleBorder(
+                        // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                      ),
+                    ),
+                    child: new Column(
+                      children: [
+                        SizedBox(height: 10),
+                          Image.asset('assets/wicon.png', width: 20,),
+                        SizedBox(height: 10),
+                          new Text("Wifi" ,style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1) ))
+                      ],
+                    ) ,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BluethoothSwicth()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      surfaceTintColor:Colors.transparent,
+                      padding: EdgeInsets.all(8),
+
+                      shape: RoundedRectangleBorder(
+                        // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                      ),
+                    ),
+                    child: new Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Image.asset('assets/bicon.png', width: 20),
+                        SizedBox(height: 10),
+                        new Text("Bluetooth",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                      ],
+                    ) ,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StripLight()),
+                      );
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      surfaceTintColor:Colors.transparent,
+                      padding: EdgeInsets.all(8),
+
+                      shape: RoundedRectangleBorder(
+                        // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                      ),
+                    ),
+                    child: new Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Image.asset('assets/wstrip-light.png', width: 20),
+                        SizedBox(height: 10),
+                        new Text("Strip Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                      ],
+                    ) ,
+                  ),
+
+                ],
+              ),
+            ),
+          )),
           appBar: AppBar(
+
+           backgroundColor:Color.fromRGBO(247, 248, 255, 1),
             title: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Wifi Control Switch",style: TextStyle(color: Color(0xFFa5a6aa),fontWeight: FontWeight.bold),),
+                const Text("Wifi Control Switch",style: TextStyle(fontWeight: FontWeight.bold),),
               ],
             )
           ),
-          body:  SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child:
-              Column(
-                children:buildRowChildren(),
+          body:Container(
+            color: Color.fromRGBO(247, 248, 255, 1),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            
+            child:           SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child:
+                Column(
+                  children:buildRowChildren(),
+                ),
               ),
             ),
           )
+
+
+
 
 
       ),

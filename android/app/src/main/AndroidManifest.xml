@@ -7,7 +7,7 @@
 
     <uses-feature android:name="android.hardware.bluetooth" />
     <application
-        android:label="Home Light Control"
+        android:label="AutoMateHome"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

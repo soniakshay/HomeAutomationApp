@@ -35,7 +35,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final databaseReference = FirebaseDatabase.instance.reference();
-  bool isShowStipLightSection =  false;
+  bool isShowStipLightSection = false;
+
   @override
   void initState() {
     super.initState();
@@ -43,22 +44,17 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataFromFirebase() async {
-    EasyLoading.show(
-        status: 'loading...'
-
-    );
-    DatabaseEvent snapshot = await databaseReference.child('isShowStipLightSection').once();
+    EasyLoading.show(status: 'loading...');
+    DatabaseEvent snapshot =
+        await databaseReference.child('isShowStipLightSection').once();
     dynamic value = snapshot.snapshot.value;
-    if(value == true) {
+    if (value == true) {
       setState(() {
-        isShowStipLightSection  =   value;
+        isShowStipLightSection = value;
       });
     }
     EasyLoading.dismiss();
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,169 +83,184 @@ class _HomeState extends State<Home> {
         colorScheme: ColorScheme.fromSeed(
           seedColor: customColor,
           // ···
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
         ),
 
         // Define the default `TextTheme`. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
-        textTheme: TextTheme(
-          displayLarge: const TextStyle(
-            fontSize: 72,
-            fontWeight: FontWeight.bold,
-          ),
-          // ···
-
-        ),
+        // textTheme: TextTheme(
+        //   displayLarge: const TextStyle(
+        //     fontSize: 72,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        //   // ···
+        //
+        // ),
       ),
       home: Scaffold(
-          appBar: AppBar(
-              title: new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text("Home",style: TextStyle(color: Color(0xFFa5a6aa),fontWeight: FontWeight.bold),),
-                ],
-              )
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                  children: [
-                    new Row(
-                      children: [
-                        Expanded(child: ElevatedButton(
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/dbg.png"),
+                    fit: BoxFit.fitHeight)),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                new Container(
+                  child: new Column(
+                    children: [
+                      Image.asset('assets/logo.png',width: 90),
 
 
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20.0), // Set border radius here
-                            ),
-                          ),
-                          onPressed: () =>
-                          {
+                    ],
+                  ) ,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                new Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>
-                                  BluethoothSwicth()),
-                            )
-                          },
-                          child: new Column(
+                        color: Colors.grey.withOpacity(0.5), // Color of the shadow
+                        spreadRadius: 5, // Spread radius
+                        blurRadius: 7, // Blur radius
+                        offset: Offset(0, 3), // Offset in x and y directions
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xffffffff), // First color
+                        Color(0xffffffff), // Gradient color
+                      ],
+                    ),
+                  ),
+                  child: new Padding(padding: EdgeInsets.all(10), child: new Column(
+                    children: [
+                      new Row(
+                        children: [
+                          Expanded(child:
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                surfaceTintColor:Colors.transparent,
+                                padding: EdgeInsets.all(8),
+
+                                shape: RoundedRectangleBorder(
+                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                ),
+                              ),
+                              onPressed: () => {
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WifiSwitch()),
+                                )
+                              }, child: new Column(
                             children: [
-                              SizedBox(height: 15),
-                              Column(
-                                  children: [
-                                    Image.asset('assets/bicon.png', width: 80,),
+                              Image.asset('assets/wifiicon.png',width: 30),
+                              SizedBox(height: 10),
 
-                                  ]),
-                              SizedBox(height: 30),
-                              Column(
-                                  children: [
-                                    Text('Bluethooth Control Switches',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Color(0xFFa5a6aa)
-                                      ),),
+                              new Text("Wifi", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ))
 
-                                  ]),
-                              SizedBox(height: 15),
                             ],
-                          ),))
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    new Row(
-                      children: [
+                          ))
+                          )
+                          ,
+                          Expanded(child:
+                          ElevatedButton(
 
-                        Expanded(child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    20.0), // Set border radius here
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                surfaceTintColor:Colors.transparent,
+                                padding: EdgeInsets.all(8),
+
+                                shape: RoundedRectangleBorder(
+                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                ),
                               ),
-                            ),
-                            onPressed: () =>
-                            {
+                              onPressed: () => {
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>
-                                    WifiSwitch()),
-                              )
-                            }, child: new Column(children: [
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BluethoothSwicth()),
+                                )
 
-                          SizedBox(height: 15),
-                          Column(
-                              children: [
-                                Image.asset('assets/wicon.png', width: 80,),
+                              }, child: new Column(
+                            children: [
+                              Image.asset('assets/bluetoothicon.png',width: 30),
+                              SizedBox(height: 10),
+                              new Text("Bluethooth", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ))
 
-                              ]),
-                          SizedBox(height: 30),
-                          Column(children: [
-                            Text('Wifi Control Swicthes', style: TextStyle(
-                                fontSize: 20, // Set the font size here
-                                color: Color(0xFFa5a6aa)
-                            ),),
+                            ],
+                          ))
+                          )
+                        ],
+                      ),
+                      new Row(
 
-                          ]),
-                          SizedBox(height: 15),
-                        ],)))
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    isShowStipLightSection ? new Row(
-                      children: [
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(child:    ElevatedButton(
 
-                        Expanded(child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    20.0), // Set border radius here
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                surfaceTintColor:Colors.transparent,
+                                padding: EdgeInsets.all(8),
+
+                                shape: RoundedRectangleBorder(
+
+                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                ),
                               ),
-                            ),
-                            onPressed: () =>
-                            {
+                              onPressed: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StripLight()),
+                                )
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>
-                                    StripLight()),
-                              )
-                            }, child: new Column(children: [
+                              }, child: new Column(
+                            children: [
+                              Image.asset('assets/striplighticon.png',width: 30),
+                              SizedBox(height: 10),
+                              new Text("Strip Light", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ))
 
-                          SizedBox(height: 15),
-                          Column(
-                              children: [
-                                Image.asset('assets/wicon.png', width: 80,),
+                            ],
+                          )),
 
-                              ]),
-                          SizedBox(height: 30),
-                          Column(children: [
-                            Text('Strip light Color Control ', style: TextStyle(
-                                fontSize: 20, // Set the font size here
-                                color: Color(0xFFa5a6aa)
-                            ),),
+                          )
 
-                          ]),
-                          SizedBox(height: 15),
-                        ],)))
-                      ],
-                    ) : new Text(""),
+                        ],
+                      )
 
-
-                  ]
-              ),
-            ),
-          )
-
+                    ],
+                  )),
+                )
+              ],
+            )),
       ),
     );
   }
-
-
 }
-

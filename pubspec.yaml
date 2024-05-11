@@ -72,10 +72,16 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/onlight.png
-    - assets/offlight.png
     - assets/bicon.png
     - assets/wicon.png
+    - assets/wifiicon.png
+    - assets/bluetoothicon.png
+    - assets/striplighticon.png
+    - assets/nlighton.png
+    - assets/nlightoff.png
+    - assets/logo.png
+    - assets/wstrip-light.png
+    - assets/dbg.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

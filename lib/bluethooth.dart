@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:test1/striplight.dart';
+import 'package:test1/wifiswitch.dart';
 
 
 void main() async {
@@ -141,6 +143,7 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
   }
 
   void onPress(index, message) async {
+
     var bluetoothScan = await Permission.bluetoothScan.request();
     var bluetoothConnect = await Permission.bluetoothConnect.request();
     if (bluetoothConnect.isGranted && bluetoothScan.isGranted) {
@@ -152,8 +155,13 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
       if (buttonState[index] == "ON" && message == "ON") {
         showDialog("Already light is on");
       }
+
+      setState(() {
+        buttonState[index] = value.toString();
+      });
       sendMessage('{"light${index}":"${message}"}', index, value);
     }
+
   }
 
   void dispose() {
@@ -172,71 +180,105 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
       for (int j = 0; j < 2; j++) {
         bool isLightOn = buttonState[i * 2 + j + 1] == "ON";
         Color textColor = buttonState[i * 2 + j + 1] == "ON"
-            ? Color(0xFFc7b698)
-            : Color(0xFFa5a6aa);
+            ? Color.fromRGBO(255,255,255,1)
+            : Color.fromRGBO(0, 0, 0 , 1);
 
         String imageUrl = buttonState[i * 2 + j + 1] == "ON"
-            ? 'assets/onlight.png'
-            : 'assets/offlight.png';
+            ? 'assets/nlighton.png'
+            : 'assets/nlightoff.png';
+
+        Color bgColor= buttonState[i * 2 + j + 1] == "ON"
+            ? Color.fromRGBO(32, 98, 255, 1) :  Color.fromRGBO(255,255,255,1);
+
+        dynamic btnColor = buttonState[i * 2 + j + 1] == "ON" ? [
+          Color(0xFF1576d5), // First color
+          Color(0xFF1989f7), // Second color
+        ]:  [
+          Color(0xffffffff), //  First color
+          Color(0xffffffff), //
+        ];
         col.add(Expanded(
             child: Padding(
               padding: EdgeInsets.all(0),
-              child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: new Column(
-                      children: [
-                        new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Image.asset(imageUrl, width: 100),
-                        ]),
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            new Padding(
-                              padding: EdgeInsets.only(top: 8),
-                              child: new Text('Light ${i * 2 + j + 1}',
-                                  style: TextStyle(fontSize: 18, color: textColor)),
-                            )
-                          ],
-                        ),
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(8),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            20.0), // Set border radius here
-                                      )),
-                                  onPressed: () => {onPress(i * 2 + j + 1, "ON")},
-                                  child: new Text("ON",
-                                      style: TextStyle(
-                                          fontSize: 18, color: Color(0xFFa5a6aa)))),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(8),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            20.0), // Set border radius here
-                                      )),
-                                  onPressed: () => {onPress(i * 2 + j + 1, "OFF")},
-                                  child: new Text(
-                                    "OFF",
-                                    style: TextStyle(
-                                        fontSize: 18, color: Color(0xFFa5a6aa)),
-                                  )),
-                            ),
-                          ],
-                        )
-                      ],
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child:  new Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1), // color of shadow
+                        spreadRadius: 1, // spread radius
+                        blurRadius: 0, // blur radius
+                        offset: Offset(0, 2), // changes position of shadow
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: btnColor,
                     ),
-                  )),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: new Column(
+
+                    children: [
+
+                      SizedBox(height: 20),
+                      new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Image.asset(imageUrl, width: 50),
+                      ]),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Padding(
+                            padding: EdgeInsets.only(top: 8),
+                            child: new Text('Light ${i * 2 + j + 1}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18, color: textColor)),
+                          )
+                        ],
+                      ),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.all(8),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          20.0), // Set border radius here
+                                    )),
+                                onPressed: () => {onPress(i * 2 + j + 1, "ON")},
+                                child: new Text("ON",
+                                    style: TextStyle(
+
+                                        fontSize: 18, color:Color.fromRGBO(0, 0, 0, 1)))),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.all(8),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          20.0), // Set border radius here
+                                    )),
+                                onPressed: () => {onPress(i * 2 + j + 1, "OFF")},
+                                child: new Text(
+                                  "OFF",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Color.fromRGBO(0, 0, 0, 1)),
+                                )),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             )));
       }
       row.add(new Row(children: col));
@@ -272,7 +314,7 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
         colorScheme: ColorScheme.fromSeed(
           seedColor: customColor,
           // ···
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
         ),
 
         // Define the default `TextTheme`. Use this to specify the default
@@ -286,32 +328,157 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
         ),
       ),
       home: Scaffold(
-          appBar: AppBar(
-              title: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Bluetooth Control Switch",
-                style: TextStyle(
-                    color: Color(0xFFa5a6aa), fontWeight: FontWeight.bold),
-              ),
-            ],
-          )),
 
+        drawer: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.3,
+            child:
+            Drawer(
+
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF1576d5), // First color
+                      Color(0xFF1989f7), // Gradient color
+                    ],
+                  ),
+                ),
+                child: new Column(
+                  children: [
+                    Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0),child:
+                    Image.asset('assets/logo.png',width: 50,),
+                    ),
+                    SizedBox(height: 50),
+
+                    ElevatedButton(
+                      onPressed: () {
+
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WifiSwitch()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor:Colors.transparent,
+                        padding: EdgeInsets.all(8),
+
+                        shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                        ),
+                      ),
+                      child: new Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Image.asset('assets/wicon.png', width: 20,),
+                          SizedBox(height: 10),
+                          new Text("Wifi" ,style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1) ))
+                        ],
+                      ) ,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BluethoothSwicth()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor:Colors.transparent,
+                        padding: EdgeInsets.all(8),
+
+                        shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                        ),
+                      ),
+                      child: new Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Image.asset('assets/bicon.png', width: 20),
+                          SizedBox(height: 10),
+                          new Text("Bluetooth",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                        ],
+                      ) ,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StripLight()),
+                        );
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor:Colors.transparent,
+                        padding: EdgeInsets.all(8),
+
+                        shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                        ),
+                      ),
+                      child: new Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Image.asset('assets/wstrip-light.png', width: 20),
+                          SizedBox(height: 10),
+                          new Text("Strip Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                        ],
+                      ) ,
+                    ),
+
+                  ],
+                ),
+              ),
+            )),
+        appBar: AppBar(
+
+            backgroundColor:Color.fromRGBO(247, 248, 255, 1),
+            title: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Bluetooth Control Switch",style: TextStyle(fontWeight: FontWeight.bold),),
+              ],
+            )
+        ),
           bottomNavigationBar: Container(
             height: 40,
             child: Center(
-              child: Text(connectionState ? 'Device connected' : 'Device disconnected',),
+              child: Text(connectionState ? 'Device connected' : 'Device disconnected',style: TextStyle(
+                color: Color.fromRGBO(0, 0, 0, 1)
+              ),),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: buildRowChildren(),
+          body: Container(
+              color: Color.fromRGBO(247, 248, 255, 1),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+
+            child:        SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: buildRowChildren(),
+                ),
               ),
-            ),
-          )),
+            )),
+      )
+
+
+
 
 
 
