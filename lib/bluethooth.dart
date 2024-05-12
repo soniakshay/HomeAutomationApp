@@ -12,7 +12,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test1/striplight.dart';
+import 'package:test1/util.dart';
 import 'package:test1/wifiswitch.dart';
+
+import 'groupLight.dart';
 
 
 void main() async {
@@ -31,7 +34,9 @@ class BluethoothSwicth extends StatefulWidget {
 class _BluethoothSwicthState extends State<BluethoothSwicth> {
   late BluetoothConnection connection;
   final FlutterBluetoothSerial flutterBluetoothSerial = FlutterBluetoothSerial.instance;
+  bool isLoading =  false;
   bool connectionState = false;
+  bool isUpdate =  true;
   Map<int, String> buttonState = {
     for (int i = 1; i <= 16; i++) i: 'OFF',
   };
@@ -51,7 +56,7 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
       try {
         EasyLoading.show(status: 'Connecting To Device...');
         connection = await BluetoothConnection.toAddress(
-            "98:DA:50:02:5B:0B"); //Use your MAC address here
+            BluethoothAddress); //Use your MAC address here
         showDialog("Bluethooth Connected");
 
         setState(() {
@@ -59,18 +64,29 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
         });
         try {
           connection.input?.listen((Uint8List data) {
-            String message =
-            utf8.decode(data); // Decode data to string using UTF-8 encoding
 
-            List<String> values = message.split(',');
+            if(isUpdate) {
+              String message =
+              utf8.decode(data); // Decode data to string using UTF-8 encoding
 
-            for (String value in values) {
-              int intValue = int.parse(value);
+
+
+              List<String> values = message.split(',');
+
+              for (String value in values) {
+                int intValue = int.parse(value);
+                setState(() {
+                  buttonState[intValue] = 'ON';
+                });
+              }
               setState(() {
-                buttonState[intValue] = 'ON';
+                isUpdate =  false;
               });
             }
+
+
           }).onDone(() {
+
             print('Disconnected by remote request');
           });
         } catch (exception) {
@@ -130,6 +146,12 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
 
   void sendMessage(message, index, value) async {
     try {
+      EasyLoading.show(status: 'Loading...');
+      setState(() {
+        isLoading =  true;
+        isUpdate =  false;
+
+      });
       connection.output.add(utf8.encode(message));
       connection.output.allSent.then((_) {
         setState(() {
@@ -139,28 +161,41 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
       });
     } catch (error) {
       showDialog("Error Send Message");
+    } finally{
+
+      Future.delayed(Duration(seconds: 2), () {
+        EasyLoading.dismiss();
+        setState(() {
+          isUpdate =  true;
+          isLoading =  false;
+        });
+      });
     }
   }
 
   void onPress(index, message) async {
 
-    var bluetoothScan = await Permission.bluetoothScan.request();
-    var bluetoothConnect = await Permission.bluetoothConnect.request();
-    if (bluetoothConnect.isGranted && bluetoothScan.isGranted) {
-      if (connection == null) {
-        connect();
-      }
-      var value = message;
+    if(!isLoading) {
+      var bluetoothScan = await Permission.bluetoothScan.request();
+      var bluetoothConnect = await Permission.bluetoothConnect.request();
+      if (bluetoothConnect.isGranted && bluetoothScan.isGranted) {
+        if (connection == null) {
+          connect();
+        }
+        var value = message;
 
-      if (buttonState[index] == "ON" && message == "ON") {
-        showDialog("Already light is on");
+        if (buttonState[index] == "ON" && message == "ON") {
+          showDialog("Already light is on");
+        }
+
+        // setState(() {
+        //   buttonState[index] = value.toString();
+        // });
+        sendMessage('{"light${index}":"${message}"}', index, value);
       }
 
-      setState(() {
-        buttonState[index] = value.toString();
-      });
-      sendMessage('{"light${index}":"${message}"}', index, value);
     }
+
 
   }
 
@@ -439,6 +474,36 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
                         ],
                       ) ,
                     ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupLight()),
+                        );
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor:Colors.transparent,
+                        padding: EdgeInsets.all(8),
+
+                        shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                        ),
+                      ),
+                      child: new Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Image.asset('assets/wgrouplight.png', width: 20),
+                          SizedBox(height: 10),
+                          new Text("Group Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                        ],
+                      ) ,
+                    ),
+
 
                   ],
                 ),

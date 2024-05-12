@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test1/wifiswitch.dart';
 
 import 'bluethooth.dart';
+import 'groupLight.dart';
 import 'util.dart';
 
 
@@ -248,6 +249,37 @@ class _StripLightState extends State<StripLight> {
                           ],
                         ) ,
                       ),
+
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GroupLight()),
+                          );
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                          surfaceTintColor:Colors.transparent,
+                          padding: EdgeInsets.all(8),
+
+                          shape: RoundedRectangleBorder(
+                            // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                          ),
+                        ),
+                        child: new Column(
+                          children: [
+                            SizedBox(height: 10),
+                            Image.asset('assets/wgrouplight.png', width: 20),
+                            SizedBox(height: 10),
+                            new Text("Group Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
+                          ],
+                        ) ,
+                      ),
+
 
                     ],
                   ),

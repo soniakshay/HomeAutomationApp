@@ -82,6 +82,8 @@ flutter:
     - assets/logo.png
     - assets/wstrip-light.png
     - assets/dbg.png
+    - assets/grouplight.png
+    - assets/wgrouplight.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

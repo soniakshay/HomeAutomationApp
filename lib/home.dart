@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:test1/groupLight.dart';
 import 'package:test1/striplight.dart';
 import 'package:test1/wifiswitch.dart';
 
@@ -243,6 +244,39 @@ class _HomeState extends State<Home> {
                               Image.asset('assets/striplighticon.png',width: 30),
                               SizedBox(height: 10),
                               new Text("Strip Light", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ))
+
+                            ],
+                          )),
+
+                          ),
+                          Expanded(child:    ElevatedButton(
+
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                surfaceTintColor:Colors.transparent,
+                                padding: EdgeInsets.all(8),
+
+                                shape: RoundedRectangleBorder(
+
+                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                ),
+                              ),
+                              onPressed: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => GroupLight()),
+                                )
+
+                              }, child: new Column(
+                            children: [
+                              Image.asset('assets/grouplight.png',width: 30),
+                              SizedBox(height: 10),
+                              new Text("Group Light", style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ))
