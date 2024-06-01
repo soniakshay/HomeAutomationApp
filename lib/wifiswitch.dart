@@ -33,6 +33,7 @@ class WifiSwitch extends StatefulWidget {
 class _WifiSwitchState extends State<WifiSwitch> {
   final databaseReference = FirebaseDatabase.instance.reference();
   List<Map> lights = [];
+  int lightsCount = 32;
 
   @override
   void initState() {
@@ -50,7 +51,7 @@ class _WifiSwitchState extends State<WifiSwitch> {
     dynamic value = snapshot.snapshot.value;
     Map<dynamic, dynamic> lightsMap = value ;
     lights.clear();
-    for(int i =1;i<=16; i++) {
+    for(int i =1;i<=lightsCount; i++) {
         setState(() {
           Map<String, dynamic> lightsObject = {
             'light${i}': lightsMap['light${i}'],

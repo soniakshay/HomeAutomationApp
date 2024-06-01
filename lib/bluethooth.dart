@@ -37,8 +37,9 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
   bool isLoading =  false;
   bool connectionState = false;
   bool isUpdate =  true;
+  int lightsCount = 32;
   Map<int, String> buttonState = {
-    for (int i = 1; i <= 16; i++) i: 'OFF',
+    for (int i = 1; i <=  32 ; i++) i: 'OFF',
   };
 
   @override
@@ -210,7 +211,7 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
   List<Widget> buildRowChildren() {
     List<Widget> row = [];
     List<Widget> col = [];
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < (lightsCount/2); i++) {
       col = [];
       for (int j = 0; j < 2; j++) {
         bool isLightOn = buttonState[i * 2 + j + 1] == "ON";
