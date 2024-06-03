@@ -53,7 +53,7 @@ class _GroupLightState extends State<GroupLight> {
     dynamic lightValue = snapshotForLight.snapshot.value;
     Map<dynamic, dynamic> lightsMap = lightValue ;
     lights.clear();
-    for(int i =1;i<=16; i++) {
+    for(int i =1;i<=lightsCount; i++) {
       setState(() {
         Map<String, dynamic> lightsObject = {
           'light${i}': lightsMap['light${i}'],
