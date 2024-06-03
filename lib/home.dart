@@ -11,7 +11,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:test1/groupLight.dart';
 import 'package:test1/striplight.dart';
 import 'package:test1/wifiswitch.dart';
-
 import 'bluethooth.dart';
 import 'util.dart';
 
@@ -99,201 +98,203 @@ class _HomeState extends State<Home> {
         // ),
       ),
       home: Scaffold(
-        body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/dbg.png"),
-                    fit: BoxFit.fitHeight)),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+        body: SingleChildScrollView(
+          child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/dbg.png"),
+                      fit: BoxFit.fitHeight)),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 
-                new Container(
-                  child: new Column(
-                    children: [
-                      Image.asset('assets/logo.png',width: 90),
+                  new Container(
+                    child: new Column(
+                      children: [
+                        Image.asset('assets/logo.png',width: 90),
 
 
-                    ],
-                  ) ,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
-                new Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-
-                        color: Colors.grey.withOpacity(0.5), // Color of the shadow
-                        spreadRadius: 5, // Spread radius
-                        blurRadius: 7, // Blur radius
-                        offset: Offset(0, 3), // Offset in x and y directions
-                      ),
-                    ],
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xffffffff), // First color
-                        Color(0xffffffff), // Gradient color
                       ],
-                    ),
+                    ) ,
                   ),
-                  child: new Padding(padding: EdgeInsets.all(10), child: new Column(
-                    children: [
-                      new Row(
-                        children: [
-                          Expanded(child:
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Colors.transparent,
-                                surfaceTintColor:Colors.transparent,
-                                padding: EdgeInsets.all(8),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                  new Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
 
-                                shape: RoundedRectangleBorder(
-                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                                ),
-                              ),
-                              onPressed: () => {
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WifiSwitch()),
-                                )
-                              }, child: new Column(
-                            children: [
-                              Image.asset('assets/wifiicon.png',width: 30),
-                              SizedBox(height: 10),
-
-                              new Text("Wifi", style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ))
-
-                            ],
-                          ))
-                          )
-                          ,
-                          Expanded(child:
-                          ElevatedButton(
-
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Colors.transparent,
-                                surfaceTintColor:Colors.transparent,
-                                padding: EdgeInsets.all(8),
-
-                                shape: RoundedRectangleBorder(
-                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                                ),
-                              ),
-                              onPressed: () => {
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BluethoothSwicth()),
-                                )
-
-                              }, child: new Column(
-                            children: [
-                              Image.asset('assets/bluetoothicon.png',width: 30),
-                              SizedBox(height: 10),
-                              new Text("Bluethooth", style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ))
-
-                            ],
-                          ))
-                          )
+                          color: Colors.grey.withOpacity(0.5), // Color of the shadow
+                          spreadRadius: 5, // Spread radius
+                          blurRadius: 7, // Blur radius
+                          offset: Offset(0, 3), // Offset in x and y directions
+                        ),
+                      ],
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xffffffff), // First color
+                          Color(0xffffffff), // Gradient color
                         ],
                       ),
-                      new Row(
+                    ),
+                    child: new Padding(padding: EdgeInsets.all(10), child: new Column(
+                      children: [
+                        new Row(
+                          children: [
+                            Expanded(child:
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  surfaceTintColor:Colors.transparent,
+                                  padding: EdgeInsets.all(8),
 
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(child:    ElevatedButton(
-
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Colors.transparent,
-                                surfaceTintColor:Colors.transparent,
-                                padding: EdgeInsets.all(8),
-
-                                shape: RoundedRectangleBorder(
-
-                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  shape: RoundedRectangleBorder(
+                                    // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  ),
                                 ),
-                              ),
-                              onPressed: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StripLight()),
-                                )
+                                onPressed: () => {
 
-                              }, child: new Column(
-                            children: [
-                              Image.asset('assets/striplighticon.png',width: 30),
-                              SizedBox(height: 10),
-                              new Text("Strip Light", style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ))
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WifiSwitch()),
+                                  )
+                                }, child: new Column(
+                              children: [
+                                Image.asset('assets/wifiicon.png',width: 30),
+                                SizedBox(height: 10),
 
-                            ],
-                          )),
+                                new Text("Wifi", style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ))
 
-                          ),
-                          Expanded(child:    ElevatedButton(
+                              ],
+                            ))
+                            )
+                            ,
+                            Expanded(child:
+                            ElevatedButton(
 
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Colors.transparent,
-                                surfaceTintColor:Colors.transparent,
-                                padding: EdgeInsets.all(8),
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  surfaceTintColor:Colors.transparent,
+                                  padding: EdgeInsets.all(8),
 
-                                shape: RoundedRectangleBorder(
-
-                                  // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  shape: RoundedRectangleBorder(
+                                    // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  ),
                                 ),
-                              ),
-                              onPressed: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => GroupLight()),
-                                )
+                                onPressed: () => {
 
-                              }, child: new Column(
-                            children: [
-                              Image.asset('assets/grouplight.png',width: 30),
-                              SizedBox(height: 10),
-                              new Text("Group Light", style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ))
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BluethoothSwicth()),
+                                  )
 
-                            ],
-                          )),
+                                }, child: new Column(
+                              children: [
+                                Image.asset('assets/bluetoothicon.png',width: 30),
+                                SizedBox(height: 10),
+                                new Text("Bluethooth", style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ))
 
-                          )
+                              ],
+                            ))
+                            )
+                          ],
+                        ),
+                        new Row(
 
-                        ],
-                      )
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(child:    ElevatedButton(
 
-                    ],
-                  )),
-                )
-              ],
-            )),
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  surfaceTintColor:Colors.transparent,
+                                  padding: EdgeInsets.all(8),
+
+                                  shape: RoundedRectangleBorder(
+
+                                    // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  ),
+                                ),
+                                onPressed: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => StripLight()),
+                                  )
+
+                                }, child: new Column(
+                              children: [
+                                Image.asset('assets/striplighticon.png',width: 30),
+                                SizedBox(height: 10),
+                                new Text("Strip Light", style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ))
+
+                              ],
+                            )),
+
+                            ),
+                            Expanded(child:    ElevatedButton(
+
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  surfaceTintColor:Colors.transparent,
+                                  padding: EdgeInsets.all(8),
+
+                                  shape: RoundedRectangleBorder(
+
+                                    // borderRadius: BorderRadius.circular(20.0), // Set border radius here
+                                  ),
+                                ),
+                                onPressed: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => GroupLight()),
+                                  )
+
+                                }, child: new Column(
+                              children: [
+                                Image.asset('assets/grouplight.png',width: 30),
+                                SizedBox(height: 10),
+                                new Text("Group Light", style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ))
+
+                              ],
+                            )),
+
+                            )
+
+                          ],
+                        )
+
+                      ],
+                    )),
+                  )
+                ],
+              )),
+        ),
       ),
     );
   }

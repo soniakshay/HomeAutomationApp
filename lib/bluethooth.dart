@@ -15,6 +15,7 @@ import 'package:test1/striplight.dart';
 import 'package:test1/util.dart';
 import 'package:test1/wifiswitch.dart';
 
+import 'drawer.dart';
 import 'groupLight.dart';
 
 
@@ -37,9 +38,9 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
   bool isLoading =  false;
   bool connectionState = false;
   bool isUpdate =  true;
-  int lightsCount = 32;
+
   Map<int, String> buttonState = {
-    for (int i = 1; i <=  32 ; i++) i: 'OFF',
+    for (int i = 1; i <=  lightsCount ; i++) i: 'OFF',
   };
 
   @override
@@ -365,156 +366,13 @@ class _BluethoothSwicthState extends State<BluethoothSwicth> {
       ),
       home: Scaffold(
 
-        drawer: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
-            child:
-            Drawer(
+        drawer: AppDrawer(),
 
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF1576d5), // First color
-                      Color(0xFF1989f7), // Gradient color
-                    ],
-                  ),
-                ),
-                child: new Column(
-                  children: [
-                    Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0),child:
-                    Image.asset('assets/logo.png',width: 50,),
-                    ),
-                    SizedBox(height: 50),
-
-                    ElevatedButton(
-                      onPressed: () {
-
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WifiSwitch()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        surfaceTintColor:Colors.transparent,
-                        padding: EdgeInsets.all(8),
-
-                        shape: RoundedRectangleBorder(
-                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                        ),
-                      ),
-                      child: new Column(
-                        children: [
-                          SizedBox(height: 10),
-                          Image.asset('assets/wicon.png', width: 20,),
-                          SizedBox(height: 10),
-                          new Text("Wifi" ,style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1) ))
-                        ],
-                      ) ,
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BluethoothSwicth()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        surfaceTintColor:Colors.transparent,
-                        padding: EdgeInsets.all(8),
-
-                        shape: RoundedRectangleBorder(
-                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                        ),
-                      ),
-                      child: new Column(
-                        children: [
-                          SizedBox(height: 10),
-                          Image.asset('assets/bicon.png', width: 20),
-                          SizedBox(height: 10),
-                          new Text("Bluetooth",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
-                        ],
-                      ) ,
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => StripLight()),
-                        );
-
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        surfaceTintColor:Colors.transparent,
-                        padding: EdgeInsets.all(8),
-
-                        shape: RoundedRectangleBorder(
-                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                        ),
-                      ),
-                      child: new Column(
-                        children: [
-                          SizedBox(height: 10),
-                          Image.asset('assets/wstrip-light.png', width: 20),
-                          SizedBox(height: 10),
-                          new Text("Strip Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
-                        ],
-                      ) ,
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GroupLight()),
-                        );
-
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        surfaceTintColor:Colors.transparent,
-                        padding: EdgeInsets.all(8),
-
-                        shape: RoundedRectangleBorder(
-                          // borderRadius: BorderRadius.circular(20.0), // Set border radius here
-                        ),
-                      ),
-                      child: new Column(
-                        children: [
-                          SizedBox(height: 10),
-                          Image.asset('assets/wgrouplight.png', width: 20),
-                          SizedBox(height: 10),
-                          new Text("Group Light",style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)))
-                        ],
-                      ) ,
-                    ),
-
-
-                  ],
-                ),
-              ),
-            )),
         appBar: AppBar(
 
             backgroundColor:Color.fromRGBO(247, 248, 255, 1),
             title: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Bluetooth Control Switch",style: TextStyle(fontWeight: FontWeight.bold),),
               ],
