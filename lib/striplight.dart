@@ -47,6 +47,9 @@ class _StripLightState extends State<StripLight> {
   final List<DropdownItem> _items = [
     DropdownItem('Water Flow', 'waterflow'),
     DropdownItem('Shooting Star', 'shootingstar'),
+    DropdownItem('Sweep Animation', 'sweepAnimation'),
+    DropdownItem('Sweep Animation 1', 'sweepAnimation1'),
+    DropdownItem('Sweep Animation 2', 'sweepAnimation2'),
 
   ];
 

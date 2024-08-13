@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test1/groupLight.dart';
+import 'package:test1/home.dart';
 import 'package:test1/striplight.dart';
 import 'package:test1/wifiswitch.dart';
 
@@ -46,7 +47,21 @@ class _AppDrawerState extends State<AppDrawer> {
               child: new Column(
                 children: [
                   Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0),child:
-                  Image.asset('assets/logo.png',width: 50,),
+                  GestureDetector(
+                    onTap: () {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Home()),
+                      );
+                      // You can also navigate to another page or show a dialog
+                    },
+                    child: Image.asset(
+                      'assets/logo.png',
+                      width: 50,
+                    ),
+                  ),
                   ),
                   SizedBox(height: 50),
 
