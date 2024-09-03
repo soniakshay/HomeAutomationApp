@@ -7,9 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:test1/groupLightSettings.dart';
+import 'package:test1/striplight.dart';
 import 'package:test1/wifiswitch.dart';
 
 import 'bluethooth.dart';
+import 'groupLight.dart';
 import 'home.dart';
 import 'util.dart';
 
@@ -47,7 +50,10 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => Home(), // HomeScreen is the initial route
         '/wifi':(context) => WifiSwitch(),
-        '/blue': (context) =>  BluethoothSwicth()
+        '/bluetooth': (context) =>  BluethoothSwicth(),
+        '/striplight': (context) =>  StripLight(),
+        '/grouplight':(context) => GroupLight(),
+        '/grouplightsettings': (context) => GroupLightSettings()
       },
     );
   }

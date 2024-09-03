@@ -252,6 +252,7 @@ class _WifiSwitchState extends State<WifiSwitch> {
     return row;
   }
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -308,7 +309,7 @@ class _WifiSwitchState extends State<WifiSwitch> {
             color: Color.fromRGBO(247, 248, 255, 1),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            
+
             child:           SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(24),

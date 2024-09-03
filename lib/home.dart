@@ -159,12 +159,7 @@ class _HomeState extends State<Home> {
                                               ),
                                         ),
                                         onPressed: () => {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        WifiSwitch()),
-                                              )
+                                              Navigator.pushNamed(context,'/wifi')
                                             },
                                         child: new Column(
                                           children: [
@@ -190,13 +185,9 @@ class _HomeState extends State<Home> {
                                               ),
                                         ),
                                         onPressed: () => {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BluethoothSwicth()),
-                                              )
-                                            },
+                                          Navigator.pushNamed(context,'/bluetooth')
+
+                                        },
                                         child: new Column(
                                           children: [
                                             Image.asset(
@@ -229,12 +220,7 @@ class _HomeState extends State<Home> {
                                             ),
                                       ),
                                       onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      StripLight()),
-                                            )
+                                            Navigator.pushNamed(context,'/striplight')
                                           },
                                       child: new Column(
                                         children: [
@@ -263,13 +249,9 @@ class _HomeState extends State<Home> {
                                             ),
                                       ),
                                       onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      GroupLight()),
-                                            )
-                                          },
+                                            Navigator.pushNamed(context,'/grouplight')
+
+                                      },
                                       child: new Column(
                                         children: [
                                           Image.asset('assets/grouplight.png',
