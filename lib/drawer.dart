@@ -68,8 +68,11 @@ class _AppDrawerState extends State<AppDrawer> {
                   ElevatedButton(
                     onPressed: () {
 
-
-                      Navigator.pushNamed(context,'/wifi');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WifiSwitch()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shadowColor: Colors.transparent,
@@ -94,7 +97,12 @@ class _AppDrawerState extends State<AppDrawer> {
                   ElevatedButton(
                     onPressed: () {
 
-                      Navigator.pushNamed(context,'/bluethooth');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BluethoothSwicth()),
+                      );
+
                     },
                     style: ElevatedButton.styleFrom(
                       shadowColor: Colors.transparent,
@@ -118,7 +126,11 @@ class _AppDrawerState extends State<AppDrawer> {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context,'/striplight');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StripLight()),
+                      );
 
                     },
                     style: ElevatedButton.styleFrom(
@@ -142,7 +154,11 @@ class _AppDrawerState extends State<AppDrawer> {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context,'/grouplight');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupLight()),
+                      );
 
                     },
                     style: ElevatedButton.styleFrom(
@@ -168,7 +184,11 @@ class _AppDrawerState extends State<AppDrawer> {
 
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context,'/grouplightsettings');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupLightSettings()),
+                      );
 
                     },
                     style: ElevatedButton.styleFrom(
