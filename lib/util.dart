@@ -6,3 +6,7 @@ final String messagingSenderId =  "messagingSenderId";
 final String  projectId = "projectId";
 final String  BluethoothAddress =  "BluethoothAddress";
 final int lightsCount  = 32;
+
+
+
+final String cubeName = "Magic Cube";

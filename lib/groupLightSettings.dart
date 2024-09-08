@@ -37,6 +37,8 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
   final databaseReference = FirebaseDatabase.instance.reference();
   List<Map> lights = [];
   List<Map> lights1 = [];
+  bool isMagicCubeActive = false;
+
   Map<dynamic,dynamic> rooms = {};
   @override
   void initState() {
@@ -53,10 +55,18 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
 
       );
       DatabaseEvent snapshot = await databaseReference.child('LightGroups').once();
+      DatabaseEvent snapshot1 = await databaseReference.child('cubeconfig').once();
+      dynamic cubeconfig =  snapshot1.snapshot.value;
       dynamic value = snapshot.snapshot.value;
+      value[cubeName] = cubeconfig["lights"];
+      Map<dynamic,dynamic> finalValue = {
+        cubeName: cubeconfig["lights"],
+        ...value
 
-        setState(() {
-          rooms= value;
+      };
+      setState(() {
+          rooms= finalValue;
+          isMagicCubeActive =  cubeconfig['isActive'];
         });
     }catch(e) {
       setState(() {
@@ -67,7 +77,7 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
       EasyLoading.dismiss();
     }
 
-    
+
 
   }
   Widget buildButton(String title) {
@@ -85,9 +95,9 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
   }
   void onPress(values, isLightOn) async {
 
-   
 
-    
+
+
   }
 
 
@@ -133,12 +143,26 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
               }
             }
 
-            databaseReference.child('LightGroups').child(room).set(lightGroup).then((_) {
-              showTostDialog("Add Room  Successfully");
-              fetchDataFromFirebase();
-            }).catchError((error) {
-              print('Failed to add LightGroup: $error');
-            });
+
+            if(room == cubeName) {
+              databaseReference.child('cubeconfig').child("lights").set(lightGroup).then((_) {
+                showTostDialog("Add Room  Successfully");
+                fetchDataFromFirebase();
+              }).catchError((error) {
+                print('Failed to add LightGroup: $error');
+              });
+
+
+            } else {
+              databaseReference.child('LightGroups').child(room).set(lightGroup).then((_) {
+                showTostDialog("Add Room  Successfully");
+                fetchDataFromFirebase();
+              }).catchError((error) {
+                print('Failed to add LightGroup: $error');
+              });
+
+            }
+
 
             setState(() {
               _selectedLights = selectedLights;
@@ -158,6 +182,31 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
     }catch(e) {
 
     }
+
+
+  }
+
+
+
+
+  void MagicCubeToggle(bool value) {
+
+      Map<String, bool> obj = {
+        'isActive': value
+      };
+      databaseReference.child('cubeconfig').update(obj).then((_) {
+        if(value) {
+          showTostDialog("Magic Cube On");
+
+        } else {
+          showTostDialog("Magic Cube Off");
+
+        }
+       fetchDataFromFirebase();
+      }).catchError((error) {
+        print('Failed to add LightGroup: $error');
+      });
+
 
 
   }
@@ -258,12 +307,30 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
                                                   AddLightsDialog(room,lightValueArr);
                                                 },
                                               ),
+
+
+                                              room == cubeName ?
+                                              Transform.scale(
+                                                scale: 0.6, // Adjust the scale factor to resize the switch
+                                                child: Switch(
+                                                  value: isMagicCubeActive,
+                                                  activeColor: Color(0xFF1576d5),
+                                                  onChanged: (bool value) {
+
+                                                    setState(() {
+                                                      isMagicCubeActive =  value;
+                                                    });
+                                                    MagicCubeToggle(value);
+                                                  },
+                                                ),
+                                              ):
                                               IconButton(
                                                 icon: Icon(Icons.delete, size: 15),
                                                 onPressed: () {
                                                   RemoveRoom(room);
                                                 },
-                                              ),
+                                              )
+
                                             ],
 
                                           )
@@ -318,7 +385,7 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
             ))
           )
       );
-   
+
     }
 
 
