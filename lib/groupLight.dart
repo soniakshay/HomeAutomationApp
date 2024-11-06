@@ -49,45 +49,48 @@ class _GroupLightState extends State<GroupLight> {
         status: 'loading...'
 
     );
-    DatabaseEvent snapshotForLight = await databaseReference.child('lights').once();
-    dynamic lightValue = snapshotForLight.snapshot.value;
-    Map<dynamic, dynamic> lightsMap = lightValue ;
-    lights.clear();
-    for(int i =1;i<=lightsCount; i++) {
-      setState(() {
-        Map<String, dynamic> lightsObject = {
-          'light${i}': lightsMap['light${i}'],
-          // Add more lights as needed
-        };
-        lights.add(lightsObject);
-      });
-    } 
-    
-    print("Lights");
 
-    print(lights);
-    DatabaseEvent snapshot = await databaseReference.child('LightGroups').once();
-    dynamic value = snapshot.snapshot.value;
-
-
-    Map<dynamic, dynamic> rooms = value ;
-    lights1.clear();
-    rooms.forEach((room, lights) {
-      List <String> arrayOfObjects = [];
-      lights.forEach((lightKey, lightValue) {
-        arrayOfObjects.add(lightValue);
-
-
-      });
-      setState(() {
-        lights1.add({ 
-          room: arrayOfObjects
+    databaseReference.child('lights').onValue.listen((snapshot) {
+      lights.clear();
+      dynamic value = snapshot.snapshot.value;
+      Map<dynamic, dynamic> lightsMap = value ;
+      lights.clear();
+      for(int i =1;i<=lightsCount; i++) {
+        setState(() {
+          Map<String, dynamic> lightsObject = {
+            'light${i}': lightsMap['light${i}'],
+            // Add more lights as needed
+          };
+          lights.add(lightsObject);
         });
-      });
-
-
+      }
     });
-    print(lights1);
+
+    databaseReference.child('LightGroups').onValue.listen((snapshot) {
+
+
+
+      if (snapshot.snapshot.value != null) {
+        dynamic value = snapshot.snapshot.value;
+        Map<dynamic, dynamic> rooms = value;
+        lights1.clear();
+        rooms.forEach((room, lights) {
+          if (lights != '') {
+            List <String> arrayOfObjects = [];
+            lights.forEach((lightKey, lightValue) {
+              arrayOfObjects.add(lightValue);
+            });
+            setState(() {
+              lights1.add({
+                room: arrayOfObjects
+              });
+            });
+          }
+        });
+      }
+    });
+
+
 
 
     EasyLoading.dismiss();
@@ -118,7 +121,7 @@ class _GroupLightState extends State<GroupLight> {
        databaseReference.child('lights').update(object).then((value) => {
          showDialog("Success"),
          databaseReference.update({'isUpdated': true}).then((value) => {}),
-         fetchDataFromFirebase(),
+         // fetchDataFromFirebase(),
        }).onError((error, stackTrace) => {
          showDialog("Error In Update"),
        });
@@ -132,7 +135,7 @@ class _GroupLightState extends State<GroupLight> {
        databaseReference.child('lights').update(object1).then((value) => {
          showDialog("Success"),
          databaseReference.update({'isUpdated': true}).then((value) => {}),
-         fetchDataFromFirebase(),
+         // fetchDataFromFirebase(),
        }).onError((error, stackTrace) => {
          showDialog("Error In Update"),
        });
@@ -368,8 +371,30 @@ class _GroupLightState extends State<GroupLight> {
           }
           row.add(new Row(children: col));
         }
+    } else {
+      col.add(
+        Padding(padding: EdgeInsets.fromLTRB(1,1,5,1),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Wrap(
+                  children: [
+                    new Text("Currently, there are no lights available."
+                        " Please add a light using the edit button.", textAlign: TextAlign.center)
+
+                  ],
+                )
+
+              ],
+            )
+        ),
+
+      );
     }
 
+
+    row.add(new Column(children: col));
     return row;
   }
 

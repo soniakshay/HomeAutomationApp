@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:test1/bluethooth.dart';
 import 'package:test1/drawer.dart';
-import 'package:test1/striplight.dart';
-import 'package:test1/wifiswitch.dart';
+
 import 'add-light-dialog.dart';
 import 'util.dart';
 
@@ -54,20 +52,56 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
           status: 'loading...'
 
       );
-      DatabaseEvent snapshot = await databaseReference.child('LightGroups').once();
       DatabaseEvent snapshot1 = await databaseReference.child('cubeconfig').once();
-      dynamic cubeconfig =  snapshot1.snapshot.value;
-      dynamic value = snapshot.snapshot.value;
-      value[cubeName] = cubeconfig["lights"];
-      Map<dynamic,dynamic> finalValue = {
-        cubeName: cubeconfig["lights"],
-        ...value
+      databaseReference.child('LightGroups').onValue.listen((snapshot) {
 
-      };
-      setState(() {
-          rooms= finalValue;
-          isMagicCubeActive =  cubeconfig['isActive'];
+        if (snapshot.snapshot.value != null) {
+          dynamic cubeconfig =  snapshot1.snapshot.value;
+          dynamic value = snapshot.snapshot.value;
+          value[cubeName] = cubeconfig["lights"];
+          Map<dynamic,dynamic> finalValue = {
+            cubeName: cubeconfig["lights"],
+            ...value
+
+          };
+          setState(() {
+            rooms= finalValue;
+            isMagicCubeActive =  cubeconfig['isActive'];
+          });
+        }else {
+          setState(() {
+            dynamic cubeconfig =  snapshot1.snapshot.value;
+            rooms= {
+              cubeName: cubeconfig["lights"],
+            };
+
+          });
+        }
+
+      });
+
+      databaseReference.child('cubeconfig').child('isActive').onValue.listen((snapshot1) {
+        dynamic cubeconfig =  snapshot1.snapshot.value;
+        setState(() {
+          isMagicCubeActive =  cubeconfig;
         });
+      });
+
+
+      // DatabaseEvent snapshot = await databaseReference.child('LightGroups').once();
+      // DatabaseEvent snapshot1 = await databaseReference.child('cubeconfig').once();
+      // dynamic cubeconfig =  snapshot1.snapshot.value;
+      // dynamic value = snapshot.snapshot.value;
+      // value[cubeName] = cubeconfig["lights"];
+      // Map<dynamic,dynamic> finalValue = {
+      //   cubeName: cubeconfig["lights"],
+      //   ...value
+      //
+      // };
+      // setState(() {
+      //     rooms= finalValue;
+      //     isMagicCubeActive =  cubeconfig['isActive'];
+      //   });
     }catch(e) {
       setState(() {
         rooms= {};
@@ -177,7 +211,7 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
   void RemoveRoom(room){
     try {
       databaseReference.child("LightGroups").child(room).remove();
-      fetchDataFromFirebase();
+      // fetchDataFromFirebase();
       showTostDialog("Remove Room Successfully");
     }catch(e) {
 
@@ -234,21 +268,25 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
           });
         } else{
           col.add(
-            Padding(padding: EdgeInsets.fromLTRB(1,1,5,1),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Wrap(
-                    children: [
-                      new Text("Currently, there are no lights available. Please add a light using the edit button.", textAlign: TextAlign.center)
+              Wrap( children: [
+                Padding(padding: EdgeInsets.fromLTRB(1,1,5,1),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Wrap(
+                          children: [
+                            new Text("Currently, there are no lights available. Please add a light using the edit button.", textAlign: TextAlign.center)
 
-                    ],
-                  )
+                          ],
+                        )
 
-                ],
-              )
-            ),
+                      ],
+                    )
+                ),
+
+              ])
+
 
           );
         }

@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:test1/bluethooth.dart';
-import 'package:test1/striplight.dart';
 import 'drawer.dart';
 import 'groupLight.dart';
 import 'util.dart';
@@ -39,6 +37,7 @@ class _WifiSwitchState extends State<WifiSwitch> {
   void initState() {
     super.initState();
     fetchDataFromFirebase();
+    print("hello");
 
 
   }
@@ -47,11 +46,12 @@ class _WifiSwitchState extends State<WifiSwitch> {
         status: 'loading...'
 
     );
-    DatabaseEvent snapshot = await databaseReference.child('lights').once();
-    dynamic value = snapshot.snapshot.value;
-    Map<dynamic, dynamic> lightsMap = value ;
-    lights.clear();
-    for(int i =1;i<=lightsCount; i++) {
+    databaseReference.child('lights').onValue.listen((snapshot) {
+      lights.clear();
+      dynamic value = snapshot.snapshot.value;
+      Map<dynamic, dynamic> lightsMap = value ;
+      lights.clear();
+      for(int i =1;i<=lightsCount; i++) {
         setState(() {
           Map<String, dynamic> lightsObject = {
             'light${i}': lightsMap['light${i}'],
@@ -59,7 +59,8 @@ class _WifiSwitchState extends State<WifiSwitch> {
           };
           lights.add(lightsObject);
         });
-    }
+      }
+    });
     EasyLoading.dismiss();
   }
   Widget buildButton(String title) {
