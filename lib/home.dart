@@ -8,9 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:test1/groupLight.dart';
-import 'package:test1/striplight.dart';
-import 'package:test1/wifiswitch.dart';
+
 import 'bluethooth.dart';
 import 'util.dart';
 

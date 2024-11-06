@@ -380,8 +380,8 @@ class _GroupLightState extends State<GroupLight> {
               children: [
                 Wrap(
                   children: [
-                    new Text("Currently, there are no lights available."
-                        " Please add a light using the edit button.", textAlign: TextAlign.center)
+                    new Text("Currently, there are no lights groups available."
+                        "Please add a groups using the setting button.", textAlign: TextAlign.center)
 
                   ],
                 )
@@ -394,7 +394,11 @@ class _GroupLightState extends State<GroupLight> {
     }
 
 
-    row.add(new Column(children: col));
+    row.add(new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: col
+    ));
     return row;
   }
 
