@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
-//import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'util.dart';
 
 void main() async {
@@ -30,6 +27,7 @@ class Login extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _LoginState createState() => _LoginState();
 }
+
 enum _SupportState {
   unknown,
   supported,
@@ -38,218 +36,179 @@ enum _SupportState {
 
 class _LoginState extends State<Login> {
   final databaseReference = FirebaseDatabase.instance.reference();
-  bool isShowStipLightSection = false;
 
-  final LocalAuthentication auth = LocalAuthentication();
-  _SupportState _supportState = _SupportState.unknown;
-  bool? _canCheckBiometrics;
-  List<BiometricType>? _availableBiometrics;
-  String _authorized = 'Not Authorized';
-  bool _isAuthenticating = false;
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    auth.isDeviceSupported().then(
-          (bool isSupported) => setState(() => _supportState = isSupported
-          ? _SupportState.supported
-          : _SupportState.unsupported),
+  }
+
+
+  void showTostDialog(message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
     );
+  }
+  Future<void>  _onSubmit()  async {
+    DatabaseEvent snapshot = await databaseReference.child('appPassword').once();
+    String textValue = _controller.text;  // Get the value of TextField
+    dynamic value =  snapshot.snapshot.value;
+    if(textValue == '') {
+      showTostDialog('Enter Password');
+    } else {
+      if(textValue == value) {
+        Navigator.pushNamed(context,'/home');
 
-
+      } else {
+        showTostDialog('Invalid Password');
+      }
+    }
 
   }
 
-
-
-  Future<void> _checkBiometrics() async {
-    late bool canCheckBiometrics;
-    try {
-      canCheckBiometrics = await auth.canCheckBiometrics;
-    } on PlatformException catch (e) {
-      canCheckBiometrics = false;
-      print(e);
-    }
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _canCheckBiometrics = canCheckBiometrics;
-    });
-  }
-
-
-
-
-  Future<void> _getAvailableBiometrics() async {
-    late List<BiometricType> availableBiometrics;
-    try {
-      availableBiometrics = await auth.getAvailableBiometrics();
-    } on PlatformException catch (e) {
-      availableBiometrics = <BiometricType>[];
-      print(e);
-    }
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _availableBiometrics = availableBiometrics;
-    });
-  }
-
-  Future<void> _authenticate() async {
-    bool authenticated = false;
-    try {
-      setState(() {
-        _isAuthenticating = true;
-        _authorized = 'Authenticating';
-      });
-      authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-        ),
-      );
-      setState(() {
-        _isAuthenticating = false;
-      });
-    } on PlatformException catch (e) {
-      print(e);
-      setState(() {
-        _isAuthenticating = false;
-        _authorized = 'Error - ${e.message}';
-      });
-      return;
-    }
-    if (!mounted) {
-      return;
-    }
-
-    setState(
-            () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
-  }
-
-
-  Future<void> _authenticateWithBiometrics() async {
-    bool authenticated = false;
-    try {
-      setState(() {
-        _isAuthenticating = true;
-        _authorized = 'Authenticating';
-      });
-      authenticated = await auth.authenticate(
-        localizedReason:
-        'Scan your fingerprint (or face or whatever) to authenticate',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: true,
-        ),
-      );
-      setState(() {
-        _isAuthenticating = false;
-        _authorized = 'Authenticating';
-      });
-    } on PlatformException catch (e) {
-      print(e);
-      setState(() {
-        _isAuthenticating = false;
-        _authorized = 'Error - ${e.message}';
-      });
-      return;
-    }
-    if (!mounted) {
-      return;
-    }
-
-    final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    setState(() {
-      _authorized = message;
-    });
-  }
-
-  Future<void> _cancelAuthentication() async {
-    await auth.stopAuthentication();
-    setState(() => _isAuthenticating = false);
-  }
-
-
-
-  @override
   Widget build(BuildContext context) {
-
+    MaterialColor customColor = MaterialColor(
+      0xFF292A2F, // Primary color value
+      <int, Color>{
+        50: Color(0xFFE0E0E1), // Shades for different opacities (50-900)
+        100: Color(0xFFB3B3B6),
+        200: Color(0xFF85878C),
+        300: Color(0xFF57595F),
+        400: Color(0xFF3A3C41),
+        500: Color(0xFF292A2F),
+        600: Color(0xFF242528),
+        700: Color(0xFF1E1F23),
+        800: Color(0xFF191A1E),
+        900: Color(0xFF101113),
+      },
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
+      theme: ThemeData(
+        useMaterial3: true,
+
+        // Define the default brightness and colors.
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: customColor,
+          // ···
+          brightness: Brightness.light,
+        ),
+
+        textTheme: TextTheme(
+          displayLarge: const TextStyle(
+            fontSize: 72,
+            fontWeight: FontWeight.bold,
+          ),
+          // ···
+        ),
+      ),
       home: Scaffold(
-        body: ListView(
-          padding: const EdgeInsets.only(top: 30),
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (_supportState == _SupportState.unknown)
-                  const CircularProgressIndicator()
-                else if (_supportState == _SupportState.supported)
-                  const Text('This device is supported')
-                else
-                  const Text('This device is not supported'),
-                const Divider(height: 100),
-                Text('Can check biometrics: $_canCheckBiometrics\n'),
-                ElevatedButton(
-                  onPressed: _checkBiometrics,
-                  child: const Text('Check biometrics'),
-                ),
-                const Divider(height: 100),
-                Text('Available biometrics: $_availableBiometrics\n'),
-                ElevatedButton(
-                  onPressed: _getAvailableBiometrics,
-                  child: const Text('Get available biometrics'),
-                ),
-                const Divider(height: 100),
-                Text('Current State: $_authorized\n'),
-                if (_isAuthenticating)
-                  ElevatedButton(
-                    onPressed: _cancelAuthentication,
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Cancel Authentication'),
-                        Icon(Icons.cancel),
+        body: SingleChildScrollView(
+          child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/fullbg.png"),
+                      fit: BoxFit.fitHeight)),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Container(
+                    child: new Column(
+                      children: [
+                        Image.asset('assets/logo.png', width: 90),
                       ],
                     ),
-                  )
-                else
-                  Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: _authenticate,
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text('Authenticate'),
-                            Icon(Icons.perm_device_information),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: _authenticateWithBiometrics,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(_isAuthenticating
-                                ? 'Cancel'
-                                : 'Authenticate: biometrics only'),
-                            const Icon(Icons.fingerprint),
-                          ],
-                        ),
-                      ),
-                    ],
                   ),
-              ],
-            ),
-          ],
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  new Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          // Color of the shadow
+                          spreadRadius: 5,
+                          // Spread radius
+                          blurRadius: 7,
+                          // Blur radius
+                          offset: Offset(0, 3), // Offset in x and y directions
+                        ),
+                      ],
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xffffffff), // First color
+                          Color(0xffffffff), // Gradient color
+                        ],
+                      ),
+                    ),
+                    child: new Padding(
+                        padding: EdgeInsets.all(20),
+                        child: new Column(
+                          children: [
+                            new TextField(
+                              controller: _controller,
+                              obscureText: true,
+                              cursorColor: appColor, // Change the cursor color here
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0), // Set the height
+
+                                labelStyle: TextStyle(
+                                  color: appColor, // Set the label color here
+                                  fontSize: 14
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: appColor, // Focused border color
+                                    width: 2.0,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        appColor, // Set the border color here
+                                    width:
+                                        2.0, // Optional: set the border width
+                                  ),
+                                ),
+                                labelText: 'Password',
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            SizedBox(
+                              width: double.infinity,  // This makes the button full width
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(8),
+                                  backgroundColor: appColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0), // Set border radius here
+                                  ),
+                                ),
+                                onPressed:_onSubmit,
+                                child: Text(
+                                  style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+                                  "Login",
+                                ),
+                              ),
+                            )
+                          ],
+                        )),
+                  )
+                ],
+              )),
         ),
       ),
     );

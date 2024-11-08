@@ -45,10 +45,6 @@ class _GroupLightState extends State<GroupLight> {
 
   }
   Future<void> fetchDataFromFirebase() async {
-    EasyLoading.show(
-        status: 'loading...'
-
-    );
 
     databaseReference.child('lights').onValue.listen((snapshot) {
       lights.clear();
@@ -93,7 +89,7 @@ class _GroupLightState extends State<GroupLight> {
 
 
 
-    EasyLoading.dismiss();
+    // EasyLoading.dismiss();
   }
   Widget buildButton(String title) {
     return Expanded(
@@ -194,8 +190,9 @@ class _GroupLightState extends State<GroupLight> {
     List<Widget> col = [];
     if(lights1.isNotEmpty){
 
-
-        for (int i = 0; i < (lights1.length/2).ceil(); i++) {
+        print(lights1);
+        print((lights1.length/2).ceil());
+        for (int i = 0; i <= (lights1.length/2).ceil(); i++) {
           col = [];
           for (int j = 0; j < 2; j++) {
               int index =  (i*2+j+1) - 1;
@@ -293,7 +290,7 @@ class _GroupLightState extends State<GroupLight> {
                                   )
                                 ],),
                               Row(
-                                mainAxisAlignment: lights1.length !=  index+1 && lights1.length % 2 == 0    ?  MainAxisAlignment.start : MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
 
                                 children: [
 
@@ -308,7 +305,7 @@ class _GroupLightState extends State<GroupLight> {
                                 ],),
                               SizedBox(height: 10),
                               Row(
-                                mainAxisAlignment: lights1.length !=  (index+1)  && lights1.length % 2 == 0     ?  MainAxisAlignment.start : MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
 
                                 children: [
                                   new Column(

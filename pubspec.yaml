@@ -84,6 +84,8 @@ flutter:
     - assets/dbg.png
     - assets/grouplight.png
     - assets/wgrouplight.png
+    - assets/fullbg.png
+    - assets/halfbg.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

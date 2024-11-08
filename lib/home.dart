@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/dbg.png"),
+                      image: AssetImage("assets/halfbg.png"),
                       fit: BoxFit.fitHeight)),
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,

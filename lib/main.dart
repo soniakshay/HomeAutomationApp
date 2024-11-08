@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:test1/groupLightSettings.dart';
+import 'package:test1/login.dart';
 import 'package:test1/striplight.dart';
 import 'package:test1/wifiswitch.dart';
 
@@ -48,7 +49,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Home',
       initialRoute: '/', // Specify the initial route
       routes: {
-        '/': (context) => Home(), // HomeScreen is the initial route
+        '/': (context) => Login(), // HomeScreen is the initial route
+
+        '/home': (context) => Home(), // HomeScreen is the initial route
         '/wifi':(context) => WifiSwitch(),
         '/bluetooth': (context) =>  BluethoothSwicth(),
         '/striplight': (context) =>  StripLight(),

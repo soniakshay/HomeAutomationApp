@@ -494,11 +494,27 @@ class _GroupLightSettingsState extends State<GroupLightSettings> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 TextField(
+                                  maxLength: 20,
+                                  cursorColor: appColor, // Change the cursor color here
                                   decoration: InputDecoration(
+                                      counterText: '',
                                     border: UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red), // Change color as needed
                                     ),
                                     hintText: 'Enter text',
+
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 20.0), // Set the height
+
+                                    labelStyle: TextStyle(
+                                        color: appColor, // Set the label color here
+                                        fontSize: 14
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: appColor, // Focused border color
+                                        width: 2.0,
+                                      ),
+                                    )
                                   ),
                                   onChanged: (value) {
                                     textFieldValue = value; // Update the value of textFieldValue
